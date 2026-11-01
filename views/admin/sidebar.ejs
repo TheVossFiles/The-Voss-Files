@@ -1,0 +1,14 @@
+<aside class="admin-sidebar">
+  <h3>Admin Control Panel</h3>
+  <ul class="admin-nav">
+    <li><a href="/admin" class="<%= typeof activeTab !== 'undefined' && activeTab === 'overview' ? 'active' : '' %>">📊 Overview</a></li>
+    <li><a href="/admin/chapters" class="<%= typeof activeTab !== 'undefined' && activeTab === 'chapters' ? 'active' : '' %>">📖 Chapters</a></li>
+    <li><a href="/admin/builds" class="<%= typeof activeTab !== 'undefined' && activeTab === 'builds' ? 'active' : '' %>">💾 Builds & Files</a></li>
+    <li><a href="/admin/posts" class="<%= typeof activeTab !== 'undefined' && activeTab === 'posts' ? 'active' : '' %>">✍️ Dev Blog Posts</a></li>
+    <li><a href="/admin/screenshots" class="<%= typeof activeTab !== 'undefined' && activeTab === 'screenshots' ? 'active' : '' %>">🖼️ Screenshots</a></li>
+    <li><a href="/admin/feedback" class="<%= typeof activeTab !== 'undefined' && activeTab === 'feedback' ? 'active' : '' %>">📬 Feedback & Bugs</a></li>
+    <li><a href="/admin/users" class="<%= typeof activeTab !== 'undefined' && activeTab === 'users' ? 'active' : '' %>">👥 Users & Clearance</a></li>
+    <li><a href="/admin/scores" class="<%= typeof activeTab !== 'undefined' && activeTab === 'scores' ? 'active' : '' %>">⏱️ Leaderboard Scores</a></li>
+    <li style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.5rem;"><a href="/">&larr; Return to Website</a></li>
+  </ul>
+</aside>

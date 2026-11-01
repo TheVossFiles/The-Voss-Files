@@ -1,0 +1,73 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <h1>Visual Archive</h1>
+  <p>In-engine captures and scene composition placeholders from Unity 6 URP pipeline.</p>
+</div>
+
+<section class="mt-4 mb-4">
+  <% if (screenshots && screenshots.length > 0) { %>
+    <div class="gallery-grid">
+      <% screenshots.forEach(shot => { %>
+        <div class="gallery-item">
+          <img src="<%= shot.file_path %>" alt="<%= shot.caption || 'Game Screenshot' %>" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\'gallery-placeholder\'><div class=\'icon\'>🖼️</div><span>Image unavailable</span></div>';">
+          <div class="caption">
+            <strong><%= shot.chapter_title ? shot.chapter_title + ' • ' : '' %></strong>
+            <span><%= shot.caption || 'Field Capture' %></span>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="card mb-3">
+      <p class="text-gold font-bold">Official Screenshot Archive Guidelines</p>
+      <p class="text-sm text-muted mt-1">Per project standards, all screenshot slots are clearly labeled placeholders pending final post-processing and camera renders directly from the Unity 6 URP build. No synthetic or AI-faked gameplay images are displayed here.</p>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item gallery-placeholder">
+        <div class="icon">📷</div>
+        <strong>Lobby Antechamber</strong>
+        <span class="text-muted text-sm mt-1">URP Volumetric Light Cone Test (Chapter 1)</span>
+        <span class="badge badge-planned mt-2">Placeholder Slot 1</span>
+      </div>
+
+      <div class="gallery-item gallery-placeholder">
+        <div class="icon">💡</div>
+        <strong>Dr. Voss's Study Desk</strong>
+        <span class="text-muted text-sm mt-1">Breaker Box & Chained Lockbox (Chapter 1)</span>
+        <span class="badge badge-planned mt-2">Placeholder Slot 2</span>
+      </div>
+
+      <div class="gallery-item gallery-placeholder">
+        <div class="icon">🗄️</div>
+        <strong>Records Filing Room</strong>
+        <span class="text-muted text-sm mt-1">Keypad Safe & Admission Dossiers (Chapter 2)</span>
+        <span class="badge badge-planned mt-2">Placeholder Slot 3</span>
+      </div>
+
+      <div class="gallery-item gallery-placeholder">
+        <div class="icon">🔦</div>
+        <strong>Subject 7 Living Quarters</strong>
+        <span class="text-muted text-sm mt-1">UV Phosphor Decal Wall Writing (Chapter 3)</span>
+        <span class="badge badge-planned mt-2">Placeholder Slot 4</span>
+      </div>
+
+      <div class="gallery-item gallery-placeholder">
+        <div class="icon">🎛️</div>
+        <strong>The Isolation Chamber</strong>
+        <span class="text-muted text-sm mt-1">Four-Button Console & Tape Splicer (Chapter 4)</span>
+        <span class="badge badge-planned mt-2">Placeholder Slot 5</span>
+      </div>
+
+      <div class="gallery-item gallery-placeholder">
+        <div class="icon">🚪</div>
+        <strong>Maintenance Sub-level</strong>
+        <span class="text-muted text-sm mt-1">Ending Reveal Sequence (Epilogue)</span>
+        <span class="badge badge-planned mt-2">Placeholder Slot 6</span>
+      </div>
+    </div>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>

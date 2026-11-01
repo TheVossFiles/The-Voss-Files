@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="THE VOSS FILES — First-person 3D psychological mystery escape-room game at Blackwood Institute. Built in Unity 6 for PC & Android.">
+  <title><%= typeof title !== 'undefined' ? title : 'THE VOSS FILES' %></title>
+  <link rel="stylesheet" href="/css/style.css?v=1793447393156">
+  <style>
+    .navbar { position: sticky; top: 0; z-index: 1000; background: rgba(10, 14, 26, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5); width: 100%; }
+    .navbar-inner { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; max-width: 1560px; margin: 0 auto; padding: 0.75rem 2rem; width: 100%; box-sizing: border-box; }
+    .navbar-brand { display: inline-flex !important; align-items: center !important; gap: 0.75rem; text-decoration: none; flex-shrink: 0; }
+    .brand-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--gold) !important; letter-spacing: 0.06em; white-space: nowrap; }
+    .brand-badge { font-family: var(--font-body); font-size: 0.65rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.5rem; background: rgba(201, 168, 76, 0.08); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); white-space: nowrap; }
+    .nav-menu { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-end !important; flex: 1; gap: 1.5rem; min-width: 0; }
+    .navbar-links { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 0.35rem; list-style: none; margin: 0; padding: 0; }
+    .nav-actions { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 1rem; flex-shrink: 0; }
+    .nav-auth-group, .nav-user-group { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 0.6rem; }
+    @media (max-width: 1080px) {
+      .nav-menu { display: none !important; }
+      .nav-menu.open { display: flex !important; flex-direction: column !important; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-secondary); padding: 1.5rem; border-bottom: 1px solid var(--border-strong); }
+      .navbar-links { flex-direction: column !important; width: 100%; }
+      .nav-actions { flex-direction: column !important; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="/" class="navbar-brand">
+        <span class="brand-title">THE VOSS FILES</span>
+        <span class="brand-badge">Blackwood Institute</span>
+      </a>
+
+      <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primary-nav">
+        <span class="nav-toggle-icon">☰</span>
+      </button>
+
+      <nav class="nav-menu" id="primary-nav">
+        <ul class="navbar-links">
+          <li><a href="/" class="<%= activePage === 'home' ? 'active' : '' %>">Home</a></li>
+          <li><a href="/game" class="<%= activePage === 'game' ? 'active' : '' %>">The Game</a></li>
+          <li><a href="/story" class="<%= activePage === 'story' ? 'active' : '' %>">Story & Chapters</a></li>
+          <li><a href="/characters" class="<%= activePage === 'characters' ? 'active' : '' %>">Characters</a></li>
+          <li><a href="/screenshots" class="<%= activePage === 'screenshots' ? 'active' : '' %>">Screenshots</a></li>
+          
+          <!-- Explore Dropdown for Secondary Pages -->
+          <li class="nav-dropdown">
+            <button type="button" class="nav-dropdown-toggle <%= ['how-its-built', 'leaderboard', 'blog', 'feedback', 'about'].includes(activePage) ? 'active' : '' %>" aria-haspopup="true" aria-expanded="false">
+              <span>More</span> <span class="dropdown-caret">▾</span>
+            </button>
+            <ul class="nav-dropdown-menu">
+              <li><a href="/how-its-built" class="<%= activePage === 'how-its-built' ? 'active' : '' %>">⚙️ How It Is Built</a></li>
+              <li><a href="/leaderboard" class="<%= activePage === 'leaderboard' ? 'active' : '' %>">⏱️ Leaderboard</a></li>
+              <li><a href="/blog" class="<%= activePage === 'blog' ? 'active' : '' %>">✍️ Dev Blog</a></li>
+              <li><a href="/feedback" class="<%= activePage === 'feedback' ? 'active' : '' %>">📬 Feedback & Bugs</a></li>
+              <li><a href="/about" class="<%= activePage === 'about' ? 'active' : '' %>">🏛️ About Project</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="/download" class="nav-download-btn <%= activePage === 'download' ? 'active' : '' %>">
+            <span class="download-icon">⬇</span> Download
+          </a>
+
+          <% if (currentUser) { %>
+            <div class="nav-user-group">
+              <% if (currentUser.role === 'admin') { %>
+                <a href="/admin" class="badge badge-admin <%= activePage === 'admin' ? 'active' : '' %>">Admin</a>
+              <% } %>
+              <a href="/profile" class="nav-user-link <%= activePage === 'profile' ? 'active' : '' %>"><%= currentUser.username %></a>
+              <a href="/logout" class="nav-logout-link" title="Sign out">Logout</a>
+            </div>
+          <% } else { %>
+            <div class="nav-auth-group">
+              <a href="/login" class="nav-login-link <%= activePage === 'login' ? 'active' : '' %>">Login</a>
+              <a href="/register" class="btn btn-secondary btn-sm nav-reg-btn">Register</a>
+            </div>
+          <% } %>
+        </div>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <%- include('flash') %>

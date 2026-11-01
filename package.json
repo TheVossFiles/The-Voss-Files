@@ -1,0 +1,28 @@
+{
+  "name": "the-voss-files-website",
+  "version": "1.0.0",
+  "description": "Official portal and community platform for THE VOSS FILES — a first-person 3D psychological mystery escape-room game.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "seed": "node db/seed.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["voss-files", "game", "escape-room", "psychological-mystery"],
+  "author": "Dave Dhyey Sanjay Kumar",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.7.0",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1",
+    "express-session": "^1.18.1",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^11.0.3"
+  }
+}

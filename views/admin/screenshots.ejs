@@ -1,0 +1,79 @@
+<%- include('../partials/header') %>
+
+<div class="admin-layout mt-4 mb-4">
+  <%- include('sidebar', { activeTab: 'screenshots' }) %>
+
+  <div class="admin-content">
+    <!-- Upload New Screenshot -->
+    <div class="card mb-4">
+      <h1>Manage Screenshots</h1>
+      <form action="/admin/screenshots" method="POST" enctype="multipart/form-data" class="mt-3">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="screenshotFile">Image File (.jpg, .png, .webp)</label>
+            <input type="file" name="screenshot_file" id="screenshotFile" class="form-control" accept="image/*" required>
+          </div>
+
+          <div class="form-group">
+            <label for="chapterSelect">Assign to Chapter / Sector</label>
+            <select name="chapter_id" id="chapterSelect" class="form-control">
+              <option value="">-- General / Facility Wide --</option>
+              <% chapters.forEach(ch => { %>
+                <option value="<%= ch.id %>"><%= ch.title %></option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="caption">Caption / Scene Description</label>
+            <input type="text" name="caption" id="caption" class="form-control" placeholder="e.g. Flashlight cone entering Elena's study">
+          </div>
+
+          <div class="form-group">
+            <label for="sortOrder">Sort Order (0-indexed)</label>
+            <input type="number" name="sort_order" id="sortOrder" class="form-control" value="0">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-2">Upload Screenshot</button>
+      </form>
+    </div>
+
+    <!-- Screenshots List -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Current Visual Archive</h3>
+        <span class="badge badge-playable"><%= screenshots.length %> Uploads</span>
+      </div>
+
+      <% if (screenshots && screenshots.length > 0) { %>
+        <div class="grid-3 mt-3">
+          <% screenshots.forEach(s => { %>
+            <div class="card" style="padding: 1rem;">
+              <div style="aspect-ratio: 16/9; overflow: hidden; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 0.75rem;">
+                <img src="<%= s.file_path %>" alt="<%= s.caption || 'Screenshot' %>" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <p class="font-bold text-sm"><%= s.caption || 'No caption' %></p>
+              <p class="text-xs text-gold mt-1"><%= s.chapter_title || 'General Facility' %></p>
+              <div class="flex-between mt-2">
+                <span class="text-muted text-xs">Order: #<%= s.sort_order %></span>
+                <form action="/admin/screenshots/<%= s.id %>/delete" method="POST" onsubmit="return confirm('Delete this screenshot?');">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="text-muted text-sm text-center py-4">No custom screenshots uploaded yet. Public gallery currently displays standard Unity pipeline placeholders.</p>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

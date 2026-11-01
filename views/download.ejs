@@ -1,0 +1,64 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <h1>Download Builds</h1>
+  <p>Test builds and releases for Windows PC and Android devices.</p>
+</div>
+
+<section class="mt-4 mb-4">
+  <div class="card mb-4">
+    <h3>Installation Instructions & System Requirements</h3>
+    <div class="grid-2 mt-2 text-sm text-secondary">
+      <div>
+        <p><strong>Windows PC (x64):</strong></p>
+        <p class="mt-1">OS: Windows 10/11 64-bit</p>
+        <p>DirectX: Version 11 or 12</p>
+        <p>Input: Keyboard & Mouse</p>
+        <p class="mt-1">Extract the downloaded .zip archive to a local folder and run <code>TheVossFiles.exe</code>.</p>
+      </div>
+      <div>
+        <p><strong>Android (.apk):</strong></p>
+        <p class="mt-1">OS: Android 9.0 (Pie) or higher</p>
+        <p>Vulkan / OpenGL ES 3.1 support</p>
+        <p>Input: Touch Screen</p>
+        <p class="mt-1">Enable "Install Unknown Apps" in device security settings, then run the installer package.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="stagger">
+    <% if (builds && builds.length > 0) { %>
+      <% builds.forEach(build => { %>
+        <div class="card download-card mb-2">
+          <div class="download-icon">
+            <%= build.platform === 'Windows' ? '💻' : '📱' %>
+          </div>
+          <div class="download-info">
+            <div class="flex-between">
+              <h3>THE VOSS FILES v<%= build.version %> (<%= build.platform %>)</h3>
+              <span class="badge badge-<%= build.platform === 'Windows' ? 'playable' : 'in-dev' %>"><%= build.platform %></span>
+            </div>
+            <div class="download-meta">
+              <span>📅 <%= build.release_date || 'Target: Q4 2026' %></span>
+              <span>💾 <%= build.file_size || 'Pending Final Package' %></span>
+            </div>
+            <p class="text-sm text-secondary"><%= build.notes || 'Alpha milestone testing package.' %></p>
+          </div>
+          <div class="download-actions">
+            <% if (build.file_path) { %>
+              <a href="<%= build.file_path %>" class="btn btn-primary btn-download" download>Download Build</a>
+            <% } else { %>
+              <button type="button" class="btn btn-secondary btn-download" disabled>Coming Soon</button>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="card text-center">
+        <p class="text-muted">No public release packages currently registered.</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

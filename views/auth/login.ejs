@@ -1,0 +1,35 @@
+<%- include('../partials/header') %>
+
+<div class="card form-card fade-in">
+  <h1>Auditor Sign-In</h1>
+  
+  <% if (typeof error !== 'undefined' && error) { %>
+    <div class="alert alert-error">
+      <%= error %>
+    </div>
+  <% } %>
+
+  <form action="/login" method="POST">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" class="form-control" value="<%= (typeof formData !== 'undefined' && formData.username) ? formData.username : '' %>" required autofocus>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" class="form-control" required>
+    </div>
+
+    <div class="mt-3">
+      <button type="submit" class="btn btn-primary w-full">Access Portal</button>
+    </div>
+
+    <div class="text-center mt-3 text-sm text-secondary">
+      Don't have an auditor clearance yet? <a href="/register">Register here</a>.
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

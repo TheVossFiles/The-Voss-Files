@@ -1,0 +1,7 @@
+node_modules/
+db/*.db*
+.env
+public/uploads/builds/*
+public/uploads/screenshots/*
+!public/uploads/builds/.gitkeep
+!public/uploads/screenshots/.gitkeep

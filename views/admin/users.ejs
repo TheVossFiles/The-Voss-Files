@@ -1,0 +1,74 @@
+<%- include('../partials/header') %>
+
+<div class="admin-layout mt-4 mb-4">
+  <%- include('sidebar', { activeTab: 'users' }) %>
+
+  <div class="admin-content">
+    <div class="card mb-4">
+      <h1>Registered Auditors & Clearance Roster</h1>
+      <p class="text-secondary text-sm mt-1">Manage player permissions, promote/demote administrators, and toggle clearance suspension.</p>
+    </div>
+
+    <div class="card">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Auditor</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Scores Logged</th>
+              <th>Registered</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% users.forEach(u => { %>
+              <tr>
+                <td><strong><%= u.username %></strong></td>
+                <td class="text-sm text-secondary"><%= u.email %></td>
+                <td>
+                  <span class="badge badge-<%= u.role === 'admin' ? 'admin' : 'playable' %>"><%= u.role.toUpperCase() %></span>
+                </td>
+                <td>
+                  <span class="badge badge-<%= u.is_active ? 'resolved' : 'open' %>"><%= u.is_active ? 'ACTIVE' : 'DISABLED' %></span>
+                </td>
+                <td><%= u.score_count %></td>
+                <td class="text-muted text-sm"><%= new Date(u.created_at).toLocaleDateString() %></td>
+                <td>
+                  <div class="admin-table-actions">
+                    <% if (u.id !== currentUser.id) { %>
+                      <% if (u.role === 'player') { %>
+                        <form action="/admin/users/<%= u.id %>/promote" method="POST" onsubmit="return confirm('Promote <%= u.username %> to Admin?');">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <button type="submit" class="btn btn-secondary btn-sm">Promote</button>
+                        </form>
+                      <% } else { %>
+                        <form action="/admin/users/<%= u.id %>/demote" method="POST" onsubmit="return confirm('Demote <%= u.username %> to Player?');">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <button type="submit" class="btn btn-secondary btn-sm">Demote</button>
+                        </form>
+                      <% } %>
+
+                      <form action="/admin/users/<%= u.id %>/toggle-active" method="POST" onsubmit="return confirm('Toggle status for <%= u.username %>?');">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn <%= u.is_active ? 'btn-danger' : 'btn-primary' %> btn-sm">
+                          <%= u.is_active ? 'Disable' : 'Enable' %>
+                        </button>
+                      </form>
+                    <% } else { %>
+                      <span class="text-muted text-xs">Current Session</span>
+                    <% } %>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

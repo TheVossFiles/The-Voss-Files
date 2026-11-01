@@ -1,0 +1,56 @@
+<%- include('../partials/header') %>
+
+<div class="admin-layout mt-4 mb-4">
+  <%- include('sidebar', { activeTab: 'scores' }) %>
+
+  <div class="admin-content">
+    <div class="card mb-4">
+      <h1>Global Leaderboard Scores</h1>
+      <p class="text-secondary text-sm mt-1">Review verified clearance times submitted via the game API. Remove fraudulent or invalid entries.</p>
+    </div>
+
+    <div class="card">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Auditor</th>
+              <th>Chapter Sector</th>
+              <th>Clear Time</th>
+              <th>Hints</th>
+              <th>Logged Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (scores && scores.length > 0) { %>
+              <% scores.forEach(s => { %>
+                <tr>
+                  <td>#<%= s.id %></td>
+                  <td><strong><%= s.username %></strong></td>
+                  <td><%= s.chapter_title %></td>
+                  <td><span class="text-gold font-bold"><%= Math.floor(s.time_seconds / 60) %>m <%= (s.time_seconds % 60).toFixed(1) %>s</span> <span class="text-xs text-muted">(<%= s.time_seconds %>s)</span></td>
+                  <td><%= s.hints_used %> hints</td>
+                  <td class="text-muted text-sm"><%= new Date(s.created_at).toLocaleDateString() %></td>
+                  <td>
+                    <form action="/admin/scores/<%= s.id %>/delete" method="POST" onsubmit="return confirm('Delete this speedrun score?');">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center py-4 text-muted">No clearance times recorded in the database yet.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

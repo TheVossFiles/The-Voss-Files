@@ -1,0 +1,110 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <h1>How It Is Built</h1>
+  <p>Technical architecture, engine pipelines, patterns, and custom tooling in Unity 6.</p>
+</div>
+
+<section class="mt-4">
+  <div class="grid-3 mb-4 stagger">
+    <div class="card tech-card">
+      <div class="tech-icon">⚙️</div>
+      <h3>Unity 6 Engine</h3>
+      <p>Universal Render Pipeline (URP) with custom volumetric light cones, GPU resident drawer, and multiplatform shader graphs.</p>
+    </div>
+    <div class="card tech-card">
+      <div class="tech-icon">💻</div>
+      <h3>C# Architecture</h3>
+      <p>Decoupled systems using interface contracts, event dispatchers, scriptable object configurations, and singleton managers.</p>
+    </div>
+    <div class="card tech-card">
+      <div class="tech-icon">📱</div>
+      <h3>Cross-Platform Target</h3>
+      <p>Single codebase compiling to Windows PC (x64 DirectX 12) and Android (ARM64 Vulkan/OpenGL ES 3.1).</p>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h2>Core Engineering Systems</h2>
+    <div class="section-divider"></div>
+    <p>Detailed breakdown of the architectural patterns governing game logic.</p>
+  </div>
+
+  <div class="grid-2 stagger">
+    <div class="card system-card">
+      <h3>1. IInteractable Interface Pattern</h3>
+      <p class="mt-1">
+        All interactive physical props (doors, drawers, safe keypads, UV lamps, letters, lockboxes) implement the <code>IInteractable</code> contract. The raycaster detects interactables uniformly without brittle tag checking or inheritance trees:
+      </p>
+      <pre class="code-block">public interface IInteractable {
+    string InteractionPrompt { get; }
+    void OnHoverEnter();
+    void OnHoverExit();
+    bool Interact(PlayerInventory inventory);
+}</pre>
+    </div>
+
+    <div class="card system-card">
+      <h3>2. GameManager & Inventory Singleton</h3>
+      <p class="mt-1">
+        A persistent <code>DontDestroyOnLoad</code> GameManager coordinates scene transitions and holds the active inventory (DrawerKey, LockboxKey, ArchiveKey, OfficeKey, SplicingTool, TapeReel). Progress is maintained in-memory across scene transitions; local JSON serialization is scheduled for future updates.
+      </p>
+      <pre class="code-block">public class GameManager : MonoBehaviour {
+    public static GameManager Instance { get private set; }
+    public InventoryManager Inventory { get; private set; }
+    public ObjectiveTracker Objectives { get; private set; }
+    
+    void Awake() {
+        if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); }
+        else { Destroy(gameObject); }
+    }
+}</pre>
+    </div>
+
+    <div class="card system-card">
+      <h3>3. NarrativeUI Fade System</h3>
+      <p class="mt-1">
+        Displays patient case notes, journals, and Calloway's voicemail subtitles with smooth alpha fading using CanvasGroups and coroutine interpolation. Supports full mouse/touch dismissal and auto-pause during critical text reading.
+      </p>
+    </div>
+
+    <div class="card system-card">
+      <h3>4. Objective Tracker</h3>
+      <p class="mt-1">
+        Dynamic on-screen objective feed (e.g., "Restore power to Elena's study", "Find Patient ID for Safe") synced with puzzle triggers. Triggers audio cues upon milestone completion.
+      </p>
+    </div>
+
+    <div class="card system-card">
+      <h3>5. Cinematic Intro Sequence</h3>
+      <p class="mt-1">
+        Camera sequence using Unity Cinemachine: arrives in lobby, triggers Calloway's telephone voicemail, tracks the caretaker approaching the gate, and seamlessly blends into first-person player control.
+      </p>
+    </div>
+
+    <div class="card system-card">
+      <h3>6. Puzzle Logic Systems</h3>
+      <p class="mt-1">
+        <strong>Keypad Safe (Chapter 2):</strong> 4-digit code verifier reading admission ID numbers.<br>
+        <strong>Sequence Panel (Chapter 4):</strong> 4-button state machine (Calibration, Induction, Stimulus, Reinforcement) checking correct order under UV illumination.<br>
+        <strong>Item Combination:</strong> Splicing tool combines with damaged tape reel in inventory to yield playable audio evidence.
+      </p>
+    </div>
+
+    <div class="card system-card">
+      <h3>7. Lighting & UV Phosphor Mechanics</h3>
+      <p class="mt-1">
+        Flashlight cone controlled via spotlight cookies and player battery toggles. Flip breakers dynamically swap ambient occlusion maps. UV flashlight toggles a secondary emissive shader layer revealing hidden clues ("STILL COUNTING") on designated surfaces.
+      </p>
+    </div>
+
+    <div class="card system-card">
+      <h3>8. BookPlacer Editor Tool</h3>
+      <p class="mt-1">
+        Custom Unity Editor script built with <code>EditorWindow</code> to automatically arrange, randomize, and tilt 3D book props along shelves in Elena's archive with realistic physics offsets.
+      </p>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

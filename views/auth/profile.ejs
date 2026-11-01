@@ -1,0 +1,114 @@
+<%- include('../partials/header') %>
+
+<div class="page-header">
+  <h1>Auditor Profile</h1>
+  <p>Account credentials, personal game integration token, and activity logs.</p>
+</div>
+
+<section class="mt-4 mb-4">
+  <div class="card mb-4">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <%= user.username.charAt(0).toUpperCase() %>
+      </div>
+      <div>
+        <h2><%= user.username %></h2>
+        <div class="d-flex gap-1 mt-1">
+          <span class="badge badge-<%= user.role === 'admin' ? 'admin' : 'playable' %>"><%= user.role.toUpperCase() %></span>
+          <span class="badge badge-<%= user.is_active ? 'resolved' : 'open' %>"><%= user.is_active ? 'ACTIVE' : 'SUSPENDED' %></span>
+        </div>
+        <p class="text-sm text-muted mt-1">Registered: <%= new Date(user.created_at).toLocaleDateString() %></p>
+      </div>
+    </div>
+
+    <!-- API Token Section -->
+    <div class="mt-3 p-3" style="background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border);">
+      <div class="flex-between">
+        <div>
+          <h3 class="text-gold">Game Integration API Token</h3>
+          <p class="text-sm text-muted">Use this private token inside the Unity game client settings to submit verified speedrun times directly to the global leaderboard.</p>
+        </div>
+        <form action="/profile/regenerate-token" method="POST" style="margin-left: 1rem;" onsubmit="return confirm('Regenerate token? Any game client using the old token will need updating.');">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit" class="btn btn-secondary btn-sm">Regenerate Token</button>
+        </form>
+      </div>
+      <div class="mt-2 flex-between gap-1">
+        <code class="api-token-box w-full" id="apiTokenVal"><%= user.api_token || 'No token generated' %></code>
+        <button type="button" class="btn btn-primary btn-sm" id="copyTokenBtn">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recorded Scores -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h3>My Recorded Facility Clearances</h3>
+      <span class="badge badge-playable"><%= scores.length %> Records</span>
+    </div>
+
+    <% if (scores && scores.length > 0) { %>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Chapter Sector</th>
+              <th>Clearance Time</th>
+              <th>Hints</th>
+              <th>Date Recorded</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% scores.forEach(s => { %>
+              <tr>
+                <td><strong><%= s.chapter_title %></strong></td>
+                <td><span class="text-gold font-bold"><%= Math.floor(s.time_seconds / 60) %>m <%= (s.time_seconds % 60).toFixed(1) %>s</span></td>
+                <td><%= s.hints_used %> hints</td>
+                <td class="text-muted text-sm"><%= new Date(s.created_at).toLocaleDateString() %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <p class="text-muted text-sm">No escape runs submitted yet. Play Chapter 1 and submit your clearance through the API or game client!</p>
+    <% } %>
+  </div>
+
+  <!-- My Feedback Submissions -->
+  <div class="card">
+    <div class="card-header">
+      <h3>My Feedback & Reports</h3>
+      <span class="badge badge-in-dev"><%= feedbackList.length %> Tickets</span>
+    </div>
+
+    <% if (feedbackList && feedbackList.length > 0) { %>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Message</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% feedbackList.forEach(f => { %>
+              <tr>
+                <td><span class="badge badge-<%= f.type === 'bug' ? 'admin' : (f.type === 'review' ? 'playable' : 'in-dev') %>"><%= f.type %></span></td>
+                <td><%= f.message.length > 80 ? f.message.substring(0, 80) + '...' : f.message %></td>
+                <td><span class="badge badge-<%= f.status === 'resolved' ? 'resolved' : 'open' %>"><%= f.status %></span></td>
+                <td class="text-muted text-sm"><%= new Date(f.created_at).toLocaleDateString() %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } else { %>
+      <p class="text-muted text-sm">You haven't submitted any feedback reports. Visit the <a href="/feedback">Feedback page</a> to submit one.</p>
+    <% } %>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>

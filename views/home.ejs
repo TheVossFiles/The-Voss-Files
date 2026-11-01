@@ -1,0 +1,102 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-label">Blackwood Institute • Classified Facility</div>
+    <h1>THE VOSS FILES</h1>
+    <p class="hero-tagline">"Some files were never meant to be audited. Some volunteers never left."</p>
+    <div class="hero-actions">
+      <a href="/download" class="btn btn-primary btn-download">Download Alpha</a>
+      <a href="/game" class="btn btn-secondary">Explore Premise</a>
+      <a href="/story" class="btn btn-secondary">Chapter Archives</a>
+    </div>
+  </div>
+</section>
+
+<section class="mt-4">
+  <div class="section-header">
+    <h2>The Investigation</h2>
+    <div class="section-divider"></div>
+    <p>Blackwood Institute is slated for demolition in 72 hours. You are an unnamed compliance auditor sent into the abandoned behavioural research wing to recover the classified research records of Dr. Elena Voss.</p>
+  </div>
+
+  <div class="grid-3 stagger">
+    <div class="card">
+      <div class="feature-icon">🔍</div>
+      <h3>Grounded Psychological Horror</h3>
+      <p>No supernatural monsters, no cheap jump scares. Pure atmospheric dread driven by forgotten patient archives, locked compartments, and what was done to volunteer Subject 7.</p>
+    </div>
+    <div class="card">
+      <div class="feature-icon">🧩</div>
+      <h3>Diegetic Escape Puzzles</h3>
+      <p>Every puzzle unravels narrative lore. Chained key sequences, UV light-activated notations, safe keypad combinations, and reel-to-reel audio tape splicing.</p>
+    </div>
+    <div class="card">
+      <div class="feature-icon">🎮</div>
+      <h3>Unity 6 • Multiplatform</h3>
+      <p>Built with Universal Render Pipeline for high visual fidelity on PC and optimized touch joystick controls on Android devices.</p>
+    </div>
+  </div>
+</section>
+
+<section class="mt-4">
+  <div class="section-header">
+    <h2>Research Chapters</h2>
+    <div class="section-divider"></div>
+    <p>Current development progression across the Blackwood facility sectors.</p>
+  </div>
+
+  <div class="grid-3 stagger">
+    <% chapters.slice(0, 3).forEach(chapter => { %>
+      <div class="card">
+        <div class="card-header">
+          <span class="badge badge-<%= chapter.status === 'Playable' ? 'playable' : (chapter.status === 'In development' ? 'in-dev' : 'planned') %>"><%= chapter.status %></span>
+          <span class="text-muted text-sm"><%= chapter.setting %></span>
+        </div>
+        <h3><%= chapter.title %></h3>
+        <p><%= chapter.summary.length > 140 ? chapter.summary.substring(0, 140) + '...' : chapter.summary %></p>
+        <div class="mt-2">
+          <a href="/story" class="text-gold text-sm">Read chapter dossier &rarr;</a>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+  <div class="text-center mt-3">
+    <a href="/story" class="btn btn-secondary">View All 6 Chapters</a>
+  </div>
+</section>
+
+<section class="mt-4 mb-4">
+  <div class="section-header">
+    <h2>Latest Field Dispatches</h2>
+    <div class="section-divider"></div>
+    <p>Direct updates from the development desk.</p>
+  </div>
+
+  <div class="grid-3">
+    <% if (latestPosts && latestPosts.length > 0) { %>
+      <% latestPosts.forEach(post => { %>
+        <article class="card blog-card">
+          <div class="card-body">
+            <div class="blog-meta">
+              <span>By <%= post.author_name %></span>
+              <span>•</span>
+              <time><%= new Date(post.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></time>
+            </div>
+            <h3><a href="/blog/<%= post.slug %>"><%= post.title %></a></h3>
+            <p class="blog-excerpt"><%= post.body.replace(/\n/g, ' ').substring(0, 130) %>...</p>
+          </div>
+          <div class="mt-2">
+            <a href="/blog/<%= post.slug %>" class="text-gold text-sm">Read full post &rarr;</a>
+          </div>
+        </article>
+      <% }) %>
+    <% } else { %>
+      <div class="card text-center" style="grid-column: 1 / -1;">
+        <p class="text-muted">No blog dispatches published yet.</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

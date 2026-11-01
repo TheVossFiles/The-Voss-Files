@@ -1,0 +1,84 @@
+<%- include('../partials/header') %>
+
+<div class="admin-layout mt-4 mb-4">
+  <%- include('sidebar', { activeTab: 'overview' }) %>
+
+  <div class="admin-content">
+    <div class="card mb-4">
+      <h1>Administrative Dashboard Overview</h1>
+      <p class="text-secondary text-sm mt-1">Live metrics across user accounts, game builds, editorial content, and open bug tickets.</p>
+    </div>
+
+    <!-- Stat Grid -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-number"><%= stats.users %></div>
+        <div class="stat-label">Registered Users</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number"><%= stats.builds %></div>
+        <div class="stat-label">Game Builds</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number"><%= stats.posts %></div>
+        <div class="stat-label">Blog Posts</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number"><%= stats.scores %></div>
+        <div class="stat-label">Clearance Scores</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" style="color: var(--accent-red);"><%= stats.openFeedback %></div>
+        <div class="stat-label">Open Bug/Reviews</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number"><%= stats.screenshots %></div>
+        <div class="stat-label">Screenshots</div>
+      </div>
+    </div>
+
+    <!-- Recent Open Feedback -->
+    <div class="card">
+      <div class="flex-between mb-3">
+        <h3>Pending Feedback & Bug Reports</h3>
+        <a href="/admin/feedback" class="btn btn-secondary btn-sm">View All Tickets &rarr;</a>
+      </div>
+
+      <% if (recentFeedback && recentFeedback.length > 0) { %>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Author</th>
+                <th>Message</th>
+                <th>Rating</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% recentFeedback.forEach(f => { %>
+                <tr>
+                  <td><span class="badge badge-<%= f.type === 'bug' ? 'admin' : (f.type === 'review' ? 'playable' : 'in-dev') %>"><%= f.type %></span></td>
+                  <td><strong><%= f.username || 'Anonymous' %></strong></td>
+                  <td><%= f.message.length > 70 ? f.message.substring(0, 70) + '...' : f.message %></td>
+                  <td><%= f.rating ? '★ ' + f.rating : '—' %></td>
+                  <td>
+                    <form action="/admin/feedback/<%= f.id %>/resolve" method="POST" style="display: inline;">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <button type="submit" class="btn btn-primary btn-sm">Resolve</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } else { %>
+        <p class="text-muted text-sm text-center">No pending feedback tickets! All submissions have been addressed.</p>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

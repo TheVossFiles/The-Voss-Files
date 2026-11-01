@@ -1,0 +1,115 @@
+<%- include('../partials/header') %>
+
+<div class="admin-layout mt-4 mb-4">
+  <%- include('sidebar', { activeTab: 'builds' }) %>
+
+  <div class="admin-content">
+    <!-- Add / Edit Build Card -->
+    <div class="card mb-4">
+      <h3><%= editing ? 'Edit Build: ' + editing.version : 'Register New Build Package' %></h3>
+      <form action="<%= editing ? '/admin/builds/' + editing.id : '/admin/builds' %>" method="POST" enctype="multipart/form-data" class="mt-3">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="buildVersion">Version String (e.g. 0.1.0-alpha)</label>
+            <input type="text" name="version" id="buildVersion" class="form-control" value="<%= editing ? editing.version : '' %>" required>
+          </div>
+
+          <div class="form-group">
+            <label for="buildPlatform">Platform Target</label>
+            <select name="platform" id="buildPlatform" class="form-control" required>
+              <option value="Windows" <%= editing && editing.platform === 'Windows' ? 'selected' : '' %>>Windows PC</option>
+              <option value="Android" <%= editing && editing.platform === 'Android' ? 'selected' : '' %>>Android</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="releaseDate">Release Date</label>
+            <input type="date" name="release_date" id="releaseDate" class="form-control" value="<%= editing ? editing.release_date : new Date().toISOString().split('T')[0] %>">
+          </div>
+
+          <div class="form-group">
+            <label for="buildFile">Upload File (.zip, .apk, .exe)</label>
+            <input type="file" name="build_file" id="buildFile" class="form-control">
+            <% if (editing && editing.file_path) { %>
+              <p class="text-sm text-gold mt-1">Current file: <%= editing.file_path %> (<%= editing.file_size %>)</p>
+            <% } %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="buildNotes">Release Notes / Patch Details</label>
+          <textarea name="notes" id="buildNotes" class="form-control" rows="3"><%= editing ? editing.notes : '' %></textarea>
+        </div>
+
+        <div class="form-group">
+          <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <input type="checkbox" name="is_published" value="1" <%= (!editing || editing.is_published) ? 'checked' : '' %>>
+            <span>Publish this build on public download page</span>
+          </label>
+        </div>
+
+        <div class="d-flex gap-1 mt-3">
+          <button type="submit" class="btn btn-primary"><%= editing ? 'Update Build' : 'Create Build' %></button>
+          <% if (editing) { %>
+            <a href="/admin/builds" class="btn btn-secondary">Cancel</a>
+          <% } %>
+        </div>
+      </form>
+    </div>
+
+    <!-- Builds List Table -->
+    <div class="card">
+      <div class="card-header">
+        <h1>Registered Game Builds</h1>
+        <span class="badge badge-playable"><%= builds.length %> Builds</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Version</th>
+              <th>Platform</th>
+              <th>File Status</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% builds.forEach(b => { %>
+              <tr>
+                <td><strong>v<%= b.version %></strong></td>
+                <td><span class="badge badge-<%= b.platform === 'Windows' ? 'playable' : 'in-dev' %>"><%= b.platform %></span></td>
+                <td>
+                  <% if (b.file_path) { %>
+                    <span class="text-gold font-bold">Attached (<%= b.file_size %>)</span>
+                  <% } else { %>
+                    <span class="text-muted">No file (Placeholder)</span>
+                  <% } %>
+                </td>
+                <td>
+                  <span class="badge badge-<%= b.is_published ? 'resolved' : 'open' %>"><%= b.is_published ? 'PUBLISHED' : 'DRAFT' %></span>
+                </td>
+                <td>
+                  <div class="admin-table-actions">
+                    <a href="/admin/builds/<%= b.id %>/edit" class="btn btn-secondary btn-sm">Edit</a>
+                    <form action="/admin/builds/<%= b.id %>/delete" method="POST" onsubmit="return confirm('Delete this build?');">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

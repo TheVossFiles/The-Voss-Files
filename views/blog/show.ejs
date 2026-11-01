@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+
+<article class="mt-4 mb-4">
+  <div class="page-header" style="padding-top: 1rem;">
+    <h1><%= post.title %></h1>
+    <div class="blog-meta mt-1 justify-center" style="display: flex; justify-content: center; gap: 1rem;">
+      <span>By <strong class="text-gold"><%= post.author_name %></strong></span>
+      <span>•</span>
+      <time><%= new Date(post.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) %></time>
+    </div>
+  </div>
+
+  <div class="card mt-4 blog-post-body">
+    <% post.body.split('\n\n').forEach(para => { %>
+      <% if (para.startsWith('•')) { %>
+        <ul style="margin-left: 1.5rem; margin-bottom: 1.25rem;">
+          <% para.split('\n').forEach(item => { %>
+            <li><%= item.replace(/^•\s*/, '') %></li>
+          <% }) %>
+        </ul>
+      <% } else { %>
+        <p><%= para %></p>
+      <% } %>
+    <% }) %>
+  </div>
+
+  <!-- Comments Section -->
+  <section class="comments-section" id="comments">
+    <div class="flex-between mb-3">
+      <h3>Community Responses (<%= comments.length %>)</h3>
+      <a href="/blog" class="text-sm text-gold">&larr; Back to Dev Blog</a>
+    </div>
+
+    <!-- Add Comment Form -->
+    <% if (currentUser) { %>
+      <div class="card mb-4" style="background: var(--bg-secondary);">
+        <form action="/blog/<%= post.slug %>/comment" method="POST">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="form-group">
+            <label for="commentBody">Leave an Auditor Note</label>
+            <textarea name="body" id="commentBody" class="form-control" rows="3" placeholder="Share your feedback, bug finding, or thoughts on this update..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm">Post Comment</button>
+        </form>
+      </div>
+    <% } else { %>
+      <div class="alert alert-info mb-4">
+        Want to join the conversation? <a href="/login">Sign in</a> or <a href="/register">register an account</a> to post comments.
+      </div>
+    <% } %>
+
+    <!-- Comments List -->
+    <% if (comments && comments.length > 0) { %>
+      <div class="comments-list">
+        <% comments.forEach(c => { %>
+          <div class="comment">
+            <div class="comment-avatar">
+              <%= c.username.charAt(0).toUpperCase() %>
+            </div>
+            <div class="comment-body">
+              <div class="comment-meta">
+                <strong><%= c.username %></strong>
+                <span>• <%= new Date(c.created_at).toLocaleDateString() %></span>
+              </div>
+              <p class="text-sm"><%= c.body %></p>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <p class="text-muted text-sm text-center">No comments logged yet. Be the first to leave an observation!</p>
+    <% } %>
+  </section>
+</article>
+
+<%- include('../partials/footer') %>

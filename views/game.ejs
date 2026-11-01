@@ -1,0 +1,127 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <h1>The Game</h1>
+  <p>Overview, narrative tone, mechanics, and cross-platform control architecture.</p>
+</div>
+
+<section class="mt-4">
+  <div class="card mb-4">
+    <h2>Premise</h2>
+    <p class="mt-1">
+      Blackwood Institute, an isolated behavioural research facility established in the mid-1970s, has been condemned and sits days away from scheduled demolition. The player assumes the role of an unnamed compliance auditor deployed by the oversight firm to secure and catalog the remaining private research dossiers of lead researcher <strong>Dr. Elena Voss</strong>.
+    </p>
+    <p class="mt-2">
+      Upon arriving, what was promised to be a routine archival retrieval quickly unravels. Rooms remain locked under heavy industrial safety protocols, security logs have been selectively purged, and the facility's caretaker offers quiet, evasive assistance.
+    </p>
+  </div>
+
+  <div class="card mb-4">
+    <h2>Tone & Narrative Style</h2>
+    <p class="mt-1">
+      <strong>Grounded Psychological Dread:</strong> <em>THE VOSS FILES</em> contains zero supernatural anomalies, zombie infestations, or cheap jump scares. Tension is generated entirely from environmental storytelling: reading patient observation charts, deciphering personal correspondence, operating aged institutional machinery, and piecing together how an obsessive clinical trial broke its volunteer.
+    </p>
+  </div>
+
+  <div class="section-header mt-4">
+    <h2>Input & Control Schemes</h2>
+    <div class="section-divider"></div>
+    <p>Designed for responsive tactile feedback across Desktop PC and Mobile touch screens.</p>
+  </div>
+
+  <div class="controls-grid">
+    <div class="card">
+      <div class="card-header">
+        <h3>Windows PC Controls</h3>
+        <span class="badge badge-playable">Keyboard & Mouse</span>
+      </div>
+      <div class="table-wrapper">
+        <table class="controls-table">
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Key / Input</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Movement</td>
+              <td><span class="key-badge">W</span> <span class="key-badge">A</span> <span class="key-badge">S</span> <span class="key-badge">D</span></td>
+            </tr>
+            <tr>
+              <td>Look / Camera</td>
+              <td><span class="key-badge">Mouse Movement</span></td>
+            </tr>
+            <tr>
+              <td>Interact / Examine</td>
+              <td><span class="key-badge">E</span></td>
+            </tr>
+            <tr>
+              <td>Toggle Flashlight</td>
+              <td><span class="key-badge">F</span></td>
+            </tr>
+            <tr>
+              <td>Pause / Inventory Menu</td>
+              <td><span class="key-badge">ESC</span> / <span class="key-badge">TAB</span></td>
+            </tr>
+            <tr>
+              <td>Aim & Inspect Focus</td>
+              <td><span class="key-badge">Right Mouse Button</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-muted mt-2">
+        <em>Crosshair feedback:</em> When hovering an interactive object, the crosshair tints yellow and displays a diegetic "[E] Examine" prompt.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h3>Android Controls</h3>
+        <span class="badge badge-in-dev">Touch Screen UI</span>
+      </div>
+      <div class="table-wrapper">
+        <table class="controls-table">
+          <thead>
+            <tr>
+              <th>Action</th>
+              <th>Touch Interaction</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Movement</td>
+              <td><span class="key-badge">Virtual Floating Joystick (Left)</span></td>
+            </tr>
+            <tr>
+              <td>Look / Pan</td>
+              <td><span class="key-badge">Touch-Drag Screen Area (Right)</span></td>
+            </tr>
+            <tr>
+              <td>Interact / Inspect</td>
+              <td><span class="key-badge">[E] Context Action Button</span></td>
+            </tr>
+            <tr>
+              <td>Toggle Flashlight</td>
+              <td><span class="key-badge">[F] Flashlight Quick-Button</span></td>
+            </tr>
+            <tr>
+              <td>Inspect Close-Up</td>
+              <td><span class="key-badge">Double Tap on Object</span></td>
+            </tr>
+            <tr>
+              <td>Inventory Drawer</td>
+              <td><span class="key-badge">Swipe In From Screen Right</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-sm text-muted mt-2">
+        <em>Haptic feedback:</em> Subtle vibration triggers when interactive objects enter proximity focus.
+      </p>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,68 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <h1>Auditor Leaderboard</h1>
+  <p>Verified facility completion times and efficiency rankings across Blackwood sectors.</p>
+</div>
+
+<section class="mt-4 mb-4">
+  <div class="filter-bar">
+    <a href="/leaderboard?chapter=all" class="filter-btn <%= chapterFilter === 'all' ? 'active' : '' %>">Overall Standings</a>
+    <% chapters.forEach(ch => { %>
+      <a href="/leaderboard?chapter=<%= ch.slug %>" class="filter-btn <%= chapterFilter === ch.slug ? 'active' : '' %>"><%= ch.title.split('—')[0].trim() %></a>
+    <% }) %>
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 80px;">Rank</th>
+          <th>Player / Auditor</th>
+          <th>Clear Time</th>
+          <th>Hints Used</th>
+          <% if (chapterFilter === 'all') { %>
+            <th>Sectors Cleared</th>
+          <% } else { %>
+            <th>Verified Date</th>
+          <% } %>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (scores && scores.length > 0) { %>
+          <% scores.forEach((s, idx) => { %>
+            <tr>
+              <td class="rank-col rank-<%= idx + 1 %>">#<%= idx + 1 %></td>
+              <td><strong><%= s.username %></strong></td>
+              <td>
+                <span class="text-gold font-bold">
+                  <%= Math.floor(s.time_seconds / 60) %>m <%= (s.time_seconds % 60).toFixed(1) %>s
+                </span>
+                <span class="text-muted text-sm">(<%= s.time_seconds %>s)</span>
+              </td>
+              <td><%= s.hints_used %> hints</td>
+              <% if (chapterFilter === 'all') { %>
+                <td><span class="badge badge-playable"><%= s.chapters_completed %> Chapters</span></td>
+              <% } else { %>
+                <td class="text-muted text-sm"><%= new Date(s.created_at).toLocaleDateString() %></td>
+              <% } %>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="5" class="text-center" style="padding: 2.5rem;">
+              <p class="text-muted">No speedrun records logged for this sector yet.</p>
+              <% if (currentUser) { %>
+                <p class="text-sm mt-1">Submit your completion time using your personal API token in profile settings!</p>
+              <% } else { %>
+                <p class="text-sm mt-1"><a href="/login">Log in</a> to record your escape run times.</p>
+              <% } %>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

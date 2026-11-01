@@ -1,0 +1,71 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <h1>Feedback & Bug Reports</h1>
+  <p>Help us calibrate puzzles, report anomalies, or leave a review for the dev team.</p>
+</div>
+
+<section class="mt-4 mb-4">
+  <% if (submitted) { %>
+    <div class="card form-card thank-you-card fade-in">
+      <div class="icon">📨</div>
+      <h2>Report Received</h2>
+      <p class="mt-1">Thank you for submitting your feedback. Our MCA dev team reviews every submission to tune puzzles and squash bugs.</p>
+      <div class="mt-3">
+        <a href="/feedback" class="btn btn-secondary">Submit Another Note</a>
+        <a href="/" class="btn btn-primary">Return Home</a>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="card form-card">
+      <% if (errors && errors.length > 0) { %>
+        <div class="alert alert-error">
+          <ul class="error-list">
+            <% errors.forEach(err => { %>
+              <li><%= err %></li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+
+      <form action="/feedback" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+        <div class="form-group">
+          <label for="feedbackType">Feedback Category</label>
+          <select name="type" id="feedbackType" class="form-control" required>
+            <option value="bug" <%= formData.type === 'bug' ? 'selected' : '' %>>Bug / Technical Glitch</option>
+            <option value="review" <%= formData.type === 'review' ? 'selected' : '' %>>Game Review & Experience</option>
+            <option value="suggestion" <%= formData.type === 'suggestion' ? 'selected' : '' %>>Feature / Puzzle Suggestion</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="ratingSection" style="display: none;">
+          <label>Game Rating (1 to 5 Stars)</label>
+          <div class="rating-group">
+            <% [1, 2, 3, 4, 5].forEach(star => { %>
+              <input type="radio" name="rating" id="star-<%= star %>" value="<%= star %>" <%= formData.rating == star ? 'checked' : '' %>>
+              <label for="star-<%= star %>">★ <%= star %></label>
+            <% }) %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="feedbackMessage">Detailed Message / Reproduction Steps</label>
+          <textarea name="message" id="feedbackMessage" class="form-control" rows="6" placeholder="Describe what occurred, which chapter you were in, or your overall thoughts on the atmospheric pacing..." required><%= formData.message || '' %></textarea>
+        </div>
+
+        <div class="mt-2">
+          <% if (currentUser) { %>
+            <p class="text-sm text-muted mb-2">Submitting as <strong><%= currentUser.username %></strong> (<%= currentUser.email %>)</p>
+          <% } else { %>
+            <p class="text-sm text-muted mb-2">Submitting as an anonymous guest. <a href="/login">Log in</a> to track your reports on your profile.</p>
+          <% } %>
+          <button type="submit" class="btn btn-primary w-full">Submit Feedback Dossier</button>
+        </div>
+      </form>
+    </div>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,83 @@
+<%- include('../partials/header') %>
+
+<div class="admin-layout mt-4 mb-4">
+  <%- include('sidebar', { activeTab: 'feedback' }) %>
+
+  <div class="admin-content">
+    <div class="card mb-4">
+      <div class="flex-between">
+        <div>
+          <h1>Auditor Feedback & Bug Reports</h1>
+          <p class="text-secondary text-sm mt-1">Review community suggestions, bug reports, and rating scores.</p>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="d-flex gap-1 mt-3 flex-wrap">
+        <a href="/admin/feedback?status=all&type=<%= typeFilter %>" class="filter-btn <%= statusFilter === 'all' ? 'active' : '' %>">All Statuses</a>
+        <a href="/admin/feedback?status=open&type=<%= typeFilter %>" class="filter-btn <%= statusFilter === 'open' ? 'active' : '' %>">Open Only</a>
+        <a href="/admin/feedback?status=resolved&type=<%= typeFilter %>" class="filter-btn <%= statusFilter === 'resolved' ? 'active' : '' %>">Resolved Only</a>
+        <span style="color: var(--border-strong); align-self: center;">|</span>
+        <a href="/admin/feedback?status=<%= statusFilter %>&type=all" class="filter-btn <%= typeFilter === 'all' ? 'active' : '' %>">All Types</a>
+        <a href="/admin/feedback?status=<%= statusFilter %>&type=bug" class="filter-btn <%= typeFilter === 'bug' ? 'active' : '' %>">Bugs Only</a>
+        <a href="/admin/feedback?status=<%= statusFilter %>&type=review" class="filter-btn <%= typeFilter === 'review' ? 'active' : '' %>">Reviews Only</a>
+        <a href="/admin/feedback?status=<%= statusFilter %>&type=suggestion" class="filter-btn <%= typeFilter === 'suggestion' ? 'active' : '' %>">Suggestions Only</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Type</th>
+              <th>Author</th>
+              <th>Rating</th>
+              <th>Message</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (feedbackList && feedbackList.length > 0) { %>
+              <% feedbackList.forEach(f => { %>
+                <tr>
+                  <td>
+                    <span class="badge badge-<%= f.status === 'resolved' ? 'resolved' : 'open' %>"><%= f.status.toUpperCase() %></span>
+                  </td>
+                  <td>
+                    <span class="badge badge-<%= f.type === 'bug' ? 'admin' : (f.type === 'review' ? 'playable' : 'in-dev') %>"><%= f.type %></span>
+                  </td>
+                  <td><strong><%= f.username || 'Anonymous' %></strong></td>
+                  <td><%= f.rating ? '★ ' + f.rating : '—' %></td>
+                  <td style="max-width: 320px;"><%= f.message %></td>
+                  <td class="text-muted text-sm"><%= new Date(f.created_at).toLocaleDateString() %></td>
+                  <td>
+                    <% if (f.status === 'open') { %>
+                      <form action="/admin/feedback/<%= f.id %>/resolve" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn btn-primary btn-sm">Resolve</button>
+                      </form>
+                    <% } else { %>
+                      <form action="/admin/feedback/<%= f.id %>/reopen" method="POST">
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                        <button type="submit" class="btn btn-secondary btn-sm">Re-open</button>
+                      </form>
+                    <% } %>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center py-4 text-muted">No feedback tickets match the selected filters.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

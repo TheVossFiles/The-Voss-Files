@@ -1,0 +1,52 @@
+<%- include('partials/header') %>
+
+<div class="page-header">
+  <h1>Story & Chapters</h1>
+  <p>The six investigative phases inside Blackwood Institute. Spoiler-light by design.</p>
+</div>
+
+<section class="mt-4">
+  <div class="chapter-timeline">
+    <% chapters.forEach((ch, idx) => { %>
+      <div class="chapter-card fade-in">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <span class="text-gold font-bold">Phase <%= idx %></span> •
+              <span class="text-muted"><%= ch.setting %></span>
+            </div>
+            <span class="badge badge-<%= ch.status === 'Playable' ? 'playable' : (ch.status === 'In development' ? 'in-dev' : 'planned') %>"><%= ch.status %></span>
+          </div>
+          <h2><%= ch.title %></h2>
+          <p class="mt-1"><%= ch.summary %></p>
+          <div class="mt-2 text-sm">
+            <strong class="text-gold">Core Mechanical Systems:</strong>
+            <span class="text-secondary"><%= ch.mechanic %></span>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+  <!-- Collapsible Spoilers Section -->
+  <div class="mt-4">
+    <button class="spoiler-toggle" aria-expanded="false" aria-controls="spoiler-content">
+      <span>⚠️ Classified Files • <span class="spoiler-text">Show Full Spoilers & True Ending Reveal</span></span>
+      <span class="arrow">▼</span>
+    </button>
+    <div class="spoiler-content" id="spoiler-content">
+      <h3 class="text-gold mb-2">Blackwood Facility Clearance Level 4: Complete Lore Summary</h3>
+      <p>
+        <strong>The Study & The Volunteer:</strong> In early 1982, Dr. Elena Voss enrolled Daniel Lowe ("Subject 7"), a young volunteer suffering from debilitating generalized anxiety. Promised clinical rehabilitation via sensory calibration and behavioral conditioning, Lowe was instead subjected to isolation tests in Sector 4.
+      </p>
+      <p class="mt-2">
+        <strong>The Falsified Discharge:</strong> When Lowe's mental state collapsed into severe dissociation, Dr. Voss drafted a falsified medical discharge report certifying him cured, while keeping him confined in Ward 7 to protect her academic reputation and research grants. The torn photograph discovered across Chapters 1 and 3 depicts Lowe before and after the trial.
+      </p>
+      <p class="mt-2">
+        <strong>The Epilogue Revelation:</strong> The silent "Caretaker" who opens the exterior gates for the player in the Prologue, lingers in the hallways, and directs the auditor toward key sectors is in fact <strong>Daniel Lowe himself</strong>. Having lived hidden in the maintenance corridors for decades following the institute's abandonment, he orchestrated the auditor's retrieval mission to ensure Voss's real records were exhumed and preserved before the building's demolition crews arrived.
+      </p>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
