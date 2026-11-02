@@ -202,3 +202,39 @@ Content-Type: application/json
 | **Auth** | `/login`, `/register`, `/logout` | Secure bcrypt authentication, rate-limiting, session state, CSRF tokens, and semantic `<h1>` tags. |
 | **My Profile** | `/profile` | Auditor account details, private Game API Token with one-click copy & regeneration, score history, feedback status. |
 | **Admin Dashboard** | `/admin` | Complete CMS: stats overview, chapter editor, build uploader, post publisher, screenshot gallery, feedback resolver, user role manager, and score moderator. |
+
+
+---
+
+## 8. Deploying to Render.com (100% Free)
+
+This project includes a pre-configured `render.yaml` Blueprint for one-click deployment on Render.
+
+### Step 1: Push Code to GitHub
+Create a new repository on [GitHub](https://github.com/new) (e.g. `the-voss-files-website`) and run:
+
+```bash
+cd "D:\The voss files Website"
+git remote add origin https://github.com/<YOUR_GITHUB_USERNAME>/the-voss-files-website.git
+git branch -M master
+git push -u origin master
+```
+
+### Step 2: Create Web Service on Render
+1. Go to [dashboard.render.com](https://dashboard.render.com) and sign in (using GitHub is recommended).
+2. Click **New +** → **Web Service**.
+3. Select your repository (`the-voss-files-website`) and click **Connect**.
+4. Configure the service settings:
+   - **Name:** `the-voss-files`
+   - **Region:** Any (e.g., Singapore, Frankfurt, Oregon)
+   - **Branch:** `master`
+   - **Runtime:** `Node`
+   - **Build Command:** `npm install && npm run seed`
+   - **Start Command:** `npm start`
+   - **Instance Type:** `Free`
+5. Under **Environment Variables**, set:
+   - `NODE_ENV`: `production`
+   - `SESSION_SECRET`: Click *Generate* or enter a long random string.
+6. Click **Create Web Service**.
+
+Render will automatically pull the code, install dependencies, compile SQLite, run the initial seeder, and launch your site with a free SSL certificate at `https://<your-service-name>.onrender.com`.
