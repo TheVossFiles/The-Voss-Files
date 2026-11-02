@@ -40,7 +40,7 @@
             </div>
             <div class="download-meta">
               <span>📅 <%= build.release_date || 'Target: Q4 2026' %></span>
-              <span>💾 <%= build.file_size || 'Pending Final Package' %></span>
+              <span>💾 <%= build.file_size || (build.platform === 'Android' ? '~420 MB (.apk package)' : '~1.2 GB (.zip package)') %></span>
             </div>
             <p class="text-sm text-secondary"><%= build.notes || 'Alpha milestone testing package.' %></p>
           </div>

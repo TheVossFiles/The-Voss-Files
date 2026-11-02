@@ -238,3 +238,24 @@ git push -u origin master
 6. Click **Create Web Service**.
 
 Render will automatically pull the code, install dependencies, compile SQLite, run the initial seeder, and launch your site with a free SSL certificate at `https://<your-service-name>.onrender.com`.
+
+---
+
+## 9. Mobile and deployment notes
+
+### Mobile Experience & Touch Optimization
+- **Mobile-First CSS & Safe Areas:** The application employs a fluid responsive architecture targeting 360px, 390px, 414px, and 768px viewports in both portrait and landscape orientations. Safe-area insets (`env(safe-area-inset-*)`) ensure navigation bars, footers, and floating controls are never obscured by device notches, camera cutouts, or home indicators.
+- **Touch Target Sizing:** All interactive elements—including the hamburger menu toggle, navigation links, spoiler accordions, form controls, and table actions—adhere to the Apple/W3C minimum target size of $\ge 44 \times 44\text{ px}$.
+- **Mobile Forms & iOS Safari Auto-Zoom:** All text and email form controls use a minimum `font-size: 16px` to prevent iOS Safari from automatically zooming into input fields. Forms include proper `autocomplete`, `inputmode="email"`, and `autocapitalize="none"` attributes.
+- **Mobile Navigation:** The navigation bar features a smooth hamburger menu drawer with an accessible focus trap, Escape key dismiss, backdrop-tap closure, and automatic body scroll locking while active.
+- **Responsive Tables:** Large tables (leaderboards, admin records) are wrapped with `-webkit-overflow-scrolling: touch` horizontal containers and display dynamic swipe hints on viewports $< 640\text{px}$.
+- **Accessible Lightbox with Swipe Gestures:** Gallery and screenshot images support full-screen lightbox preview with touch swipe gestures (left/right navigation), keyboard navigation (Arrow keys/Escape), and safe mobile viewport constraints ($< 90\text{vh}$).
+- **PWA & Social Share Metadata:** Includes a Web App Manifest (`/manifest.json`), SVG favicon, Apple touch icon, theme-color status bar styling (`#0a0e1a`), and Open Graph / Twitter Card preview assets (`/images/og-preview.svg`).
+
+### Render Deployment Architecture
+- **Host & Port Binding:** The application listens dynamically on `process.env.PORT || 3000` and binds explicitly to `0.0.0.0` for container networking.
+- **Reverse Proxy & HTTPS Cookies:** Configured with `app.set('trust proxy', 1)` and production-only `secure: true` cookies, allowing Render's Nginx/Envoy load balancer to terminate TLS while preserving client IP addresses and enforcing secure session cookies.
+- **Uptime Monitoring Route:** Exposes a lightweight `GET /health` route returning `{ status: "ok", uptime: ... }` for Render health checks and external uptime monitors (UptimeRobot, BetterUptime) to prevent free-tier idling.
+- **Cold-Start Notification:** A non-intrusive client-side listener detects Render free plan container spin-up delays ($> 2.2\text{s}$) and presents a friendly status notification (*"Waking up Blackwood Institute archives..."*).
+- **Compression & Static Caching:** Integrated `compression` middleware delivers Gzip/Deflate compression for mobile performance, complemented by preconnected, asynchronous Google Font loading (`font-display: swap`).
+- **Persistent Storage (DATA_DIR):** On Render's free tier, the SQLite database and local uploads are ephemeral across service redeploys. To preserve data permanently, attach a Render Persistent Disk (e.g. at `/var/data`) and set the environment variable `DATA_DIR=/var/data`. The database and upload directories will automatically store and read from the persistent mount point.

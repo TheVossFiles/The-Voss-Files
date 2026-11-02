@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#151c2e"/>
+      <stop offset="100%" stop-color="#0a0e1a"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e0c675"/>
+      <stop offset="100%" stop-color="#c9a84c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="40" y="40" width="1120" height="550" rx="16" fill="none" stroke="#c9a84c" stroke-opacity="0.25" stroke-width="2"/>
+  
+  <text x="600" y="210" text-anchor="middle" font-family="Georgia, serif" font-size="20" letter-spacing="8" fill="#c9a84c" font-weight="600">BLACKWOOD INSTITUTE • CLASSIFIED ARCHIVES</text>
+  <text x="600" y="310" text-anchor="middle" font-family="Georgia, serif" font-size="76" font-weight="700" fill="url(#gold)" letter-spacing="4">THE VOSS FILES</text>
+  <text x="600" y="380" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="24" fill="#9ca3af" font-style="italic">First-Person 3D Psychological Mystery Escape-Room Game</text>
+  
+  <rect x="475" y="430" width="250" height="48" rx="24" fill="#c9a84c" fill-opacity="0.15" stroke="#c9a84c" stroke-width="1.5"/>
+  <text x="600" y="462" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="16" font-weight="600" fill="#e0c675" letter-spacing="2">UNITY 6 • PC &amp; ANDROID</text>
+</svg>

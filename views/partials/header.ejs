@@ -2,38 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="THE VOSS FILES — First-person 3D psychological mystery escape-room game at Blackwood Institute. Built in Unity 6 for PC & Android.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="THE VOSS FILES — First-person 3D psychological mystery escape-room game at Blackwood Institute. Built in Unity 6 for Windows PC and Android.">
+  
+  <!-- Mobile Browser & Status Bar Theme Color -->
+  <meta name="theme-color" content="#0a0e1a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="The Voss Files">
+  
+  <!-- PWA Manifest & Icons -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+  <link rel="manifest" href="/manifest.json">
+  
+  <!-- Open Graph & Twitter Cards for Rich Social Sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'THE VOSS FILES' %>">
+  <meta property="og:description" content="First-person 3D psychological mystery escape-room game at Blackwood Institute. Built in Unity 6 for PC & Android.">
+  <meta property="og:image" content="/images/og-preview.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= typeof title !== 'undefined' ? title : 'THE VOSS FILES' %>">
+  <meta name="twitter:description" content="First-person 3D psychological mystery escape-room game at Blackwood Institute.">
+  <meta name="twitter:image" content="/images/og-preview.svg">
+
   <title><%= typeof title !== 'undefined' ? title : 'THE VOSS FILES' %></title>
-  <link rel="stylesheet" href="/css/style.css?v=1793447393156">
-  <style>
-    .navbar { position: sticky; top: 0; z-index: 1000; background: rgba(10, 14, 26, 0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5); width: 100%; }
-    .navbar-inner { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; max-width: 1560px; margin: 0 auto; padding: 0.75rem 2rem; width: 100%; box-sizing: border-box; }
-    .navbar-brand { display: inline-flex !important; align-items: center !important; gap: 0.75rem; text-decoration: none; flex-shrink: 0; }
-    .brand-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; color: var(--gold) !important; letter-spacing: 0.06em; white-space: nowrap; }
-    .brand-badge { font-family: var(--font-body); font-size: 0.65rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.5rem; background: rgba(201, 168, 76, 0.08); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); white-space: nowrap; }
-    .nav-menu { display: flex !important; flex-direction: row !important; align-items: center !important; justify-content: flex-end !important; flex: 1; gap: 1.5rem; min-width: 0; }
-    .navbar-links { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 0.35rem; list-style: none; margin: 0; padding: 0; }
-    .nav-actions { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 1rem; flex-shrink: 0; }
-    .nav-auth-group, .nav-user-group { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 0.6rem; }
-    @media (max-width: 1080px) {
-      .nav-menu { display: none !important; }
-      .nav-menu.open { display: flex !important; flex-direction: column !important; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-secondary); padding: 1.5rem; border-bottom: 1px solid var(--border-strong); }
-      .navbar-links { flex-direction: column !important; width: 100%; }
-      .nav-actions { flex-direction: column !important; width: 100%; }
-    }
-  </style>
+  
+  <!-- Preconnect & Asynchronous Font Loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/css/style.css?v=1793604380749">
 </head>
 <body>
+  <!-- Skip to Content Accessibility Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
   <header class="navbar">
     <div class="navbar-inner">
-      <a href="/" class="navbar-brand">
+      <a href="/" class="navbar-brand" aria-label="THE VOSS FILES — Home">
         <span class="brand-title">THE VOSS FILES</span>
         <span class="brand-badge">Blackwood Institute</span>
       </a>
 
       <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primary-nav">
-        <span class="nav-toggle-icon">☰</span>
+        <span class="nav-toggle-box">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </span>
       </button>
 
       <nav class="nav-menu" id="primary-nav">
@@ -44,7 +62,7 @@
           <li><a href="/characters" class="<%= activePage === 'characters' ? 'active' : '' %>">Characters</a></li>
           <li><a href="/screenshots" class="<%= activePage === 'screenshots' ? 'active' : '' %>">Screenshots</a></li>
           
-          <!-- Explore Dropdown for Secondary Pages -->
+          <!-- Explore Dropdown -->
           <li class="nav-dropdown">
             <button type="button" class="nav-dropdown-toggle <%= ['how-its-built', 'leaderboard', 'blog', 'feedback', 'about'].includes(activePage) ? 'active' : '' %>" aria-haspopup="true" aria-expanded="false">
               <span>More</span> <span class="dropdown-caret">▾</span>
@@ -82,6 +100,9 @@
       </nav>
     </div>
   </header>
-  <main>
+  
+  <div id="nav-overlay" class="nav-overlay" aria-hidden="true"></div>
+
+  <main id="main-content">
     <div class="container">
       <%- include('flash') %>

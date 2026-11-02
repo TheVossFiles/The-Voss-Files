@@ -10,8 +10,12 @@ const fs = require('fs');
 const MAX_FILE_SIZE = (parseInt(process.env.MAX_FILE_SIZE_MB) || 100) * 1024 * 1024;
 
 // Ensure upload directories exist
-const buildDir = path.join(__dirname, '..', 'public', 'uploads', 'builds');
-const screenshotDir = path.join(__dirname, '..', 'public', 'uploads', 'screenshots');
+// Support Render Persistent Disk if DATA_DIR is mounted
+const uploadBase = process.env.DATA_DIR 
+  ? path.join(path.resolve(process.env.DATA_DIR), 'uploads')
+  : path.join(__dirname, '..', 'public', 'uploads');
+const buildDir = path.join(uploadBase, 'builds');
+const screenshotDir = path.join(uploadBase, 'screenshots');
 
 [buildDir, screenshotDir].forEach(dir => {
   if (!fs.existsSync(dir)) {

@@ -9,7 +9,11 @@ const fs = require('fs');
 
 require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
-const DB_PATH = path.resolve(__dirname, '..', process.env.DB_PATH || './db/vossfiles.db');
+// Support Render Persistent Disk if DATA_DIR is mounted (e.g. /var/data)
+const dataDir = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : null;
+const DB_PATH = dataDir 
+  ? path.join(dataDir, 'vossfiles.db')
+  : path.resolve(__dirname, '..', process.env.DB_PATH || './db/vossfiles.db');
 
 // Ensure the db directory exists
 const dbDir = path.dirname(DB_PATH);
