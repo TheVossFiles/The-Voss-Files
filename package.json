@@ -9,9 +9,14 @@
     "seed": "node db/seed.js"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "20.x"
   },
-  "keywords": ["voss-files", "game", "escape-room", "psychological-mystery"],
+  "keywords": [
+    "voss-files",
+    "game",
+    "escape-room",
+    "psychological-mystery"
+  ],
   "author": "Dave Dhyey Sanjay Kumar",
   "license": "ISC",
   "dependencies": {
